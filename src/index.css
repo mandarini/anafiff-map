@@ -42,7 +42,7 @@ body,
   height: 100%;
 }
 
-/* Pin marker dot */
+/* Pin marker dot — bright against the dark map */
 .pin-dot {
   display: inline-flex;
   align-items: center;
@@ -51,12 +51,12 @@ body,
   height: 28px;
   padding: 0 8px;
   border-radius: 999px;
-  background: var(--accent);
-  color: var(--accent-text);
+  background: #f0c75e;
+  color: #1c1a17;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 1px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.15);
   cursor: pointer;
   transform: translate(-50%, -50%);
   white-space: nowrap;
@@ -153,4 +153,234 @@ body,
   font-weight: 600;
   cursor: pointer;
   z-index: 50;
+}
+
+/* Load-error toast */
+.load-error {
+  position: fixed;
+  top: env(safe-area-inset-top, 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(180, 60, 60, 0.95);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  z-index: 60;
+  box-shadow: var(--shadow);
+}
+
+/* Add-pin sheet */
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(28, 26, 23, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 110;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.sheet {
+  background: var(--card);
+  width: 100%;
+  max-width: 560px;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  padding: 12px 20px calc(20px + env(safe-area-inset-bottom));
+  box-shadow: var(--shadow);
+  max-height: 88svh;
+  overflow-y: auto;
+}
+@media (min-width: 640px) {
+  .sheet-backdrop {
+    align-items: center;
+  }
+  .sheet {
+    border-radius: 18px;
+    padding: 20px;
+    max-height: 80svh;
+  }
+}
+.sheet-handle {
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+  margin: 0 auto 12px;
+}
+.sheet-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+.sheet-coords {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  margin: 2px 0 12px;
+}
+.sheet-section {
+  border-top: 1px solid var(--border);
+  padding: 14px 0;
+}
+.sheet-label {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.sheet-textarea {
+  width: 100%;
+  font-family: inherit;
+  font-size: 16px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  resize: vertical;
+  background: var(--bg);
+  color: var(--text);
+}
+.sheet-counter {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: right;
+}
+.sheet-error {
+  background: rgba(180, 60, 60, 0.12);
+  color: #8a2828;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  margin: 12px 0 0;
+}
+.sheet-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+.sheet-cancel,
+.sheet-submit {
+  flex: 1;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.sheet-cancel {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.sheet-submit {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+.sheet-submit:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Pin detail rendering */
+.detail-text {
+  margin: 0;
+  font-size: 16px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.detail-image {
+  width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Picker shared */
+.picker-empty {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.picker-add,
+.picker-remove {
+  font-family: inherit;
+  font-size: 14px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px dashed var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+.picker-add:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+.picker-remove {
+  border-style: solid;
+  margin-top: 6px;
+}
+.picker-error {
+  color: #8a2828;
+  font-size: 13px;
+  margin: 0;
+}
+.picker-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.picker-preview img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Audio recorder */
+.recorder-active {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.recorder-meter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.recorder-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #c84030;
+  animation: pulse 1s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+.recorder-remaining {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.recorder-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.recorder-preview audio {
+  width: 100%;
+}
+.recorder-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
 }

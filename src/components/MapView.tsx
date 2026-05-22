@@ -35,6 +35,7 @@ export function MapView({ pins, onMapClick, onPinClick }: Props) {
         center: ANAFI_CENTER,
         zoom: 13,
         mapId: GOOGLE_MAPS_MAP_ID,
+        colorScheme: google.maps.ColorScheme.DARK,
         restriction: {
           latLngBounds: ANAFI_BOUNDS,
           strictBounds: false,

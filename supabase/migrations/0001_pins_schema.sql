@@ -5,7 +5,7 @@ create extension if not exists pgcrypto;
 
 -- Note: pins intentionally does NOT store ip_hash.
 -- Realtime payloads on this table are safe to broadcast as-is.
--- Rate limiting happens in the rate_limits table, keyed by ip_hash, with no
+-- Rate limiting happens in the anafiff_rate_limits table, keyed by ip_hash, with no
 -- link back to specific pins.
 create table public.pins (
   id uuid primary key default gen_random_uuid(),
@@ -39,12 +39,12 @@ create table public.pin_reports (
 
 create index pin_reports_pin_id_idx on public.pin_reports (pin_id);
 
-create table public.admin_allowlist (
+create table public.anafiff_admin_allowlist (
   email text primary key,
   added_at timestamptz not null default now()
 );
 
-create table public.rate_limits (
+create table public.anafiff_rate_limits (
   ip_hash text primary key,
   pin_count int not null default 0,
   window_started_at timestamptz not null default now()

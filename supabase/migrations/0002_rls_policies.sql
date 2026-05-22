@@ -2,8 +2,8 @@
 
 alter table public.pins enable row level security;
 alter table public.pin_reports enable row level security;
-alter table public.admin_allowlist enable row level security;
-alter table public.rate_limits enable row level security;
+alter table public.anafiff_admin_allowlist enable row level security;
+alter table public.anafiff_rate_limits enable row level security;
 
 -- Reading model:
 --   Clients SELECT from public.pins_public (the view), never from pins directly.
@@ -24,8 +24,8 @@ grant select on public.pins_public to anon, authenticated;
 -- Block all other access for anon.
 revoke insert, update, delete on public.pins from anon, authenticated;
 revoke all on public.pin_reports from anon, authenticated;
-revoke all on public.admin_allowlist from anon, authenticated;
-revoke all on public.rate_limits from anon, authenticated;
+revoke all on public.anafiff_admin_allowlist from anon, authenticated;
+revoke all on public.anafiff_rate_limits from anon, authenticated;
 
 -- Add an explicit SELECT policy for pins so realtime can apply it on each row.
 create policy pins_select_visible on public.pins
