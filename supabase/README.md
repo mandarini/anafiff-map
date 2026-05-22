@@ -31,11 +31,23 @@ the platform — no need to set them.
 ```bash
 pnpm dlx supabase functions deploy submit_pin --no-verify-jwt
 pnpm dlx supabase functions deploy report_pin --no-verify-jwt
+pnpm dlx supabase functions deploy admin_actions
 ```
 
-`--no-verify-jwt` is intentional: pins are anonymous, so the function accepts
-calls from anyone with the project's publishable key (the body is still
-validated). Rate limiting and bounds checks happen inside the function.
+`--no-verify-jwt` is intentional for `submit_pin` and `report_pin`: those are
+anonymous, so they accept calls from anyone with the project's publishable
+key (the body is still validated server-side). `admin_actions` keeps JWT
+verification because it requires a signed-in user whose email matches a row
+in `anafiff_admin_allowlist`.
+
+## 4a. Add an admin
+
+```sql
+insert into public.anafiff_admin_allowlist (email)
+values ('you@example.com');
+```
+
+Then visit `/admin` in the app and request a magic link to that address.
 
 ## 4. Confirm
 

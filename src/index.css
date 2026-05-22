@@ -28,7 +28,13 @@ body,
   padding: 0;
   height: 100%;
   width: 100%;
+}
+
+body {
   overflow: hidden;
+}
+body:has(.admin-shell) {
+  overflow: auto;
 }
 
 .map-page {
@@ -168,6 +174,112 @@ body,
   font-size: 13px;
   z-index: 60;
   box-shadow: var(--shadow);
+}
+
+/* Admin */
+.admin-shell {
+  min-height: 100svh;
+  background: var(--bg);
+  padding: 16px;
+  overflow-y: auto;
+  height: auto;
+}
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.admin-header h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+.admin-card {
+  max-width: 380px;
+  margin: 80px auto 0;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.admin-card h1 {
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 600;
+}
+.admin-input {
+  font-family: inherit;
+  font-size: 16px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+.admin-ok {
+  color: var(--accent);
+  font-weight: 500;
+}
+.admin-pin-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.admin-pin {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.admin-pin.hidden {
+  opacity: 0.55;
+}
+.admin-pin-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-muted);
+  align-items: center;
+}
+.admin-pin-coords {
+  font-variant-numeric: tabular-nums;
+}
+.admin-pin-reports {
+  background: rgba(180, 60, 60, 0.15);
+  color: #8a2828;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.admin-pin-hidden {
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+.admin-pin-text {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.admin-pin-image {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 /* Add-pin sheet */
