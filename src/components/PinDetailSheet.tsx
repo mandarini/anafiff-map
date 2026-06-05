@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { Pin } from '../lib/types'
 import { publicUrlFor, reportPin } from '../lib/pins'
+import { FlagIcon } from '../lib/icons'
 
 type Props = {
   pin: Pin
@@ -31,6 +32,8 @@ export function PinDetailSheet({ pin, onClose }: Props) {
       setReporting(false)
     }
   }
+
+  const reportLabel = reported ? 'Reported' : reporting ? 'Reporting…' : 'Report this pin'
 
   return (
     <div className="sheet-backdrop" onClick={onClose}>
@@ -67,18 +70,21 @@ export function PinDetailSheet({ pin, onClose }: Props) {
         {error && <p className="sheet-error">{error}</p>}
 
         <div className="sheet-actions">
-          <button
-            type="button"
-            className="sheet-cancel"
-            disabled={reporting || reported}
-            onClick={() => void handleReport()}
-          >
-            {reported ? 'Reported' : reporting ? 'Reporting…' : 'Report'}
-          </button>
           <button type="button" className="sheet-submit" onClick={onClose}>
             Close
           </button>
         </div>
+
+        <button
+          type="button"
+          className={`pin-detail-report${reported ? ' reported' : ''}`}
+          aria-label={reportLabel}
+          title={reportLabel}
+          disabled={reporting || reported}
+          onClick={() => void handleReport()}
+        >
+          <FlagIcon size={18} />
+        </button>
       </div>
     </div>
   )

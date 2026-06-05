@@ -1,18 +1,27 @@
 :root {
-  --text: #1c1a17;
-  --text-muted: #6b6258;
-  --bg: #f3eee5;
-  --card: #fff;
-  --border: rgba(0, 0, 0, 0.12);
-  --accent: #2d4f3a;
-  --accent-text: #fff;
-  --shadow: 0 12px 32px rgba(28, 26, 23, 0.18);
+  /* Festival palette (ANAFIFF 2026) */
+  --festival-bg: #130069;
+  --festival-bg-2: #021261;
+  --festival-cyan: #0dfaf6;
+  --festival-cyan-2: #45e7fb;
+  --festival-lime: #9cfa09;
+  --festival-magenta: #d216e6;
+
+  --text: #ffffff;
+  --text-muted: #45e7fb;
+  --bg: #130069;
+  --card: rgba(2, 18, 97, 0.92);
+  --border: rgba(13, 250, 246, 0.35);
+  --accent: #0dfaf6;
+  --accent-text: #130069;
+  --danger: #d216e6;
+  --shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
   --radius: 14px;
 
-  font: 16px/1.45 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font: 16px/1.45 'Bricolage Grotesque', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   color: var(--text);
   background: var(--bg);
-  color-scheme: light;
+  color-scheme: dark;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -32,6 +41,7 @@ body,
 
 body {
   overflow: hidden;
+  background: var(--festival-bg);
 }
 body:has(.admin-shell) {
   overflow: auto;
@@ -41,6 +51,7 @@ body:has(.admin-shell) {
   position: relative;
   width: 100vw;
   height: 100svh;
+  background: var(--festival-bg);
 }
 
 .map-canvas {
@@ -48,36 +59,136 @@ body:has(.admin-shell) {
   height: 100%;
 }
 
-/* Pin marker dot — bright against the dark map */
+/* Outlined display type — matches the festival's stroke-only headlines */
+.display-outline {
+  -webkit-text-stroke: 1px var(--festival-cyan);
+  color: transparent;
+  letter-spacing: 0.5px;
+}
+
+/* Pin marker pill — dark indigo with neon cyan border */
 .pin-dot {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 28px;
-  height: 28px;
-  padding: 0 8px;
+  gap: 4px;
+  min-height: 26px;
+  padding: 4px 8px;
   border-radius: 999px;
-  background: #f0c75e;
-  color: #1c1a17;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.15);
+  background: rgba(19, 0, 105, 0.92);
+  border: 1px solid var(--festival-cyan);
+  color: var(--festival-cyan);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(13, 250, 246, 0.15);
   cursor: pointer;
+  transform: translate(-50%, -100%);
+  white-space: nowrap;
+  line-height: 0;
+}
+.pin-dot svg {
+  display: block;
+}
+.pin-dot .icon-text {
+  color: var(--festival-cyan);
+}
+.pin-dot .icon-image {
+  color: var(--festival-lime);
+}
+.pin-dot .icon-audio {
+  color: var(--festival-magenta);
+}
+
+/* "You are here" dot — pulsing cyan circle */
+.locate-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--festival-cyan);
+  border: 2px solid var(--festival-bg);
+  box-shadow: 0 0 0 4px rgba(13, 250, 246, 0.25), 0 0 18px rgba(13, 250, 246, 0.6);
   transform: translate(-50%, -50%);
+  animation: locate-pulse 1.8s ease-out infinite;
+}
+@keyframes locate-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(13, 250, 246, 0.6), 0 0 12px rgba(13, 250, 246, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 0 16px rgba(13, 250, 246, 0), 0 0 18px rgba(13, 250, 246, 0.6);
+  }
+}
+
+/* Floating locate button (bottom-right of the map) */
+.locate-btn {
+  position: absolute;
+  right: 16px;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(2, 18, 97, 0.92);
+  border: 1px solid var(--festival-cyan);
+  color: var(--festival-cyan);
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  z-index: 40;
+  transition: transform 120ms ease-out, box-shadow 120ms ease-out;
+}
+.locate-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(13, 250, 246, 0.25);
+}
+.locate-btn:active {
+  transform: translateY(0);
+}
+.locate-btn:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+/* Brief inline toast (locate errors etc.) */
+.map-toast {
+  position: absolute;
+  left: 50%;
+  bottom: calc(84px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  background: rgba(2, 18, 97, 0.95);
+  color: var(--festival-cyan-2);
+  border: 1px solid var(--festival-magenta);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  z-index: 45;
+  box-shadow: var(--shadow);
   white-space: nowrap;
 }
-.pin-icons {
+
+/* Top-left logo overlay (asset provided by user) */
+.brand-mark {
+  position: absolute;
+  top: calc(12px + env(safe-area-inset-top));
+  left: 16px;
+  z-index: 50;
   display: inline-flex;
-  gap: 2px;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+.brand-mark img {
+  height: 36px;
+  width: auto;
+  display: block;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.6));
 }
 
 /* Welcome overlay */
 .welcome-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(28, 26, 23, 0.55);
-  backdrop-filter: blur(6px);
+  background: rgba(2, 18, 97, 0.7);
+  backdrop-filter: blur(8px);
   z-index: 100;
   display: flex;
   align-items: flex-end;
@@ -91,58 +202,84 @@ body:has(.admin-shell) {
 }
 .welcome-card {
   background: var(--card);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 24px;
-  max-width: 480px;
+  padding: 28px;
+  max-width: 520px;
   width: 100%;
   box-shadow: var(--shadow);
+  color: var(--text);
 }
 .welcome-card h1 {
-  margin: 0 0 4px;
-  font-size: 28px;
-  font-weight: 600;
-  letter-spacing: -0.4px;
+  margin: 0 0 6px;
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1.05;
+  color: var(--festival-lime);
 }
 .welcome-card h2 {
-  margin: 20px 0 8px;
-  font-size: 14px;
-  font-weight: 600;
+  margin: 22px 0 8px;
+  font-size: 12px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--text-muted);
+  letter-spacing: 2.5px;
+  color: var(--festival-cyan);
 }
 .welcome-subtitle {
-  color: var(--text-muted);
-  margin: 0 0 16px;
-  font-size: 14px;
-  letter-spacing: 0.5px;
+  color: var(--festival-cyan);
+  margin: 0 0 18px;
+  font-size: 13px;
+  letter-spacing: 2px;
   text-transform: uppercase;
+  font-weight: 600;
 }
 .welcome-card p {
   margin: 0 0 12px;
+  color: var(--text);
 }
 .welcome-card ul {
   margin: 0 0 16px;
   padding-left: 20px;
+  color: var(--text);
 }
 .welcome-card li {
   margin-bottom: 6px;
 }
+.welcome-card li::marker {
+  color: var(--festival-magenta);
+}
 .welcome-hint {
   font-style: italic;
-  color: var(--text-muted);
+  color: var(--festival-cyan-2);
+}
+.welcome-disclaimer {
+  display: block;
+  margin: 20px 0 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--festival-cyan-2);
+}
+.welcome-disclaimer strong {
+  color: var(--text);
+  font-weight: 600;
 }
 .welcome-go {
   width: 100%;
   padding: 14px 16px;
-  background: var(--accent);
-  color: var(--accent-text);
+  background: var(--festival-cyan);
+  color: var(--festival-bg);
   border: none;
   border-radius: 10px;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   cursor: pointer;
   margin-top: 8px;
+  font-family: inherit;
 }
 .welcome-reopen {
   position: fixed;
@@ -151,14 +288,15 @@ body:has(.admin-shell) {
   width: 40px;
   height: 40px;
   border-radius: 999px;
-  border: none;
-  background: var(--card);
-  color: var(--text);
+  border: 1px solid var(--festival-cyan);
+  background: rgba(2, 18, 97, 0.92);
+  color: var(--festival-cyan);
   box-shadow: var(--shadow);
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   z-index: 50;
+  font-family: inherit;
 }
 
 /* Load-error toast */
@@ -167,8 +305,8 @@ body:has(.admin-shell) {
   top: env(safe-area-inset-top, 12px);
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(180, 60, 60, 0.95);
-  color: #fff;
+  background: rgba(210, 22, 230, 0.95);
+  color: #ffffff;
   padding: 8px 14px;
   border-radius: 8px;
   font-size: 13px;
@@ -179,10 +317,11 @@ body:has(.admin-shell) {
 /* Admin */
 .admin-shell {
   min-height: 100svh;
-  background: var(--bg);
+  background: var(--festival-bg);
   padding: 16px;
   overflow-y: auto;
   height: auto;
+  color: var(--text);
 }
 .admin-header {
   display: flex;
@@ -194,23 +333,29 @@ body:has(.admin-shell) {
 .admin-header h1 {
   margin: 0;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--festival-cyan);
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 .admin-card {
   max-width: 380px;
   margin: 80px auto 0;
   background: var(--card);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 24px;
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
   gap: 10px;
+  color: var(--text);
 }
 .admin-card h1 {
   margin: 0 0 4px;
   font-size: 22px;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--festival-lime);
 }
 .admin-input {
   font-family: inherit;
@@ -218,12 +363,15 @@ body:has(.admin-shell) {
   padding: 10px 12px;
   border-radius: 10px;
   border: 1px solid var(--border);
-  background: var(--bg);
+  background: rgba(19, 0, 105, 0.6);
   color: var(--text);
 }
+.admin-input::placeholder {
+  color: rgba(69, 231, 251, 0.5);
+}
 .admin-ok {
-  color: var(--accent);
-  font-weight: 500;
+  color: var(--festival-lime);
+  font-weight: 600;
 }
 .admin-pin-list {
   list-style: none;
@@ -234,9 +382,10 @@ body:has(.admin-shell) {
 }
 .admin-pin {
   background: var(--card);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 14px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -249,26 +398,28 @@ body:has(.admin-shell) {
   flex-wrap: wrap;
   gap: 10px;
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--festival-cyan-2);
   align-items: center;
 }
 .admin-pin-coords {
   font-variant-numeric: tabular-nums;
 }
 .admin-pin-reports {
-  background: rgba(180, 60, 60, 0.15);
-  color: #8a2828;
+  background: rgba(210, 22, 230, 0.2);
+  color: var(--festival-magenta);
   padding: 2px 8px;
   border-radius: 999px;
-  font-weight: 600;
+  font-weight: 700;
+  border: 1px solid var(--festival-magenta);
 }
 .admin-pin-hidden {
   background: rgba(0, 0, 0, 0.6);
-  color: #fff;
+  color: var(--festival-lime);
   padding: 2px 8px;
   border-radius: 999px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 1px;
+  border: 1px solid var(--festival-lime);
 }
 .admin-pin-text {
   margin: 0;
@@ -286,15 +437,17 @@ body:has(.admin-shell) {
 .sheet-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(28, 26, 23, 0.45);
-  backdrop-filter: blur(4px);
+  background: rgba(2, 18, 97, 0.6);
+  backdrop-filter: blur(6px);
   z-index: 110;
   display: flex;
   align-items: flex-end;
   justify-content: center;
 }
 .sheet {
+  position: relative;
   background: var(--card);
+  border: 1px solid var(--border);
   width: 100%;
   max-width: 560px;
   border-top-left-radius: 18px;
@@ -303,6 +456,7 @@ body:has(.admin-shell) {
   box-shadow: var(--shadow);
   max-height: 88svh;
   overflow-y: auto;
+  color: var(--text);
 }
 @media (min-width: 640px) {
   .sheet-backdrop {
@@ -323,11 +477,13 @@ body:has(.admin-shell) {
 }
 .sheet-header h2 {
   margin: 0;
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--festival-cyan);
+  letter-spacing: 0.5px;
 }
 .sheet-coords {
-  color: var(--text-muted);
+  color: var(--festival-cyan-2);
   font-size: 12px;
   font-variant-numeric: tabular-nums;
   margin: 2px 0 12px;
@@ -340,9 +496,10 @@ body:has(.admin-shell) {
   display: block;
   font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--text-muted);
+  letter-spacing: 2px;
+  color: var(--festival-cyan);
   margin-bottom: 8px;
+  font-weight: 600;
 }
 .sheet-textarea {
   width: 100%;
@@ -352,18 +509,22 @@ body:has(.admin-shell) {
   border: 1px solid var(--border);
   border-radius: 10px;
   resize: vertical;
-  background: var(--bg);
+  background: rgba(19, 0, 105, 0.6);
   color: var(--text);
+}
+.sheet-textarea::placeholder {
+  color: rgba(69, 231, 251, 0.5);
 }
 .sheet-counter {
   margin: 4px 0 0;
   font-size: 11px;
-  color: var(--text-muted);
+  color: var(--festival-cyan-2);
   text-align: right;
 }
 .sheet-error {
-  background: rgba(180, 60, 60, 0.12);
-  color: #8a2828;
+  background: rgba(210, 22, 230, 0.15);
+  color: var(--festival-magenta);
+  border: 1px solid var(--festival-magenta);
   border-radius: 8px;
   padding: 8px 10px;
   font-size: 14px;
@@ -381,20 +542,24 @@ body:has(.admin-shell) {
   border-radius: 10px;
   border: none;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.5px;
 }
 .sheet-cancel {
-  background: var(--bg);
-  color: var(--text);
-  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--festival-cyan);
+  border: 1px solid var(--festival-cyan);
 }
 .sheet-submit {
-  background: var(--accent);
-  color: var(--accent-text);
+  background: var(--festival-lime);
+  color: var(--festival-bg);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 .sheet-submit:disabled {
-  opacity: 0.4;
+  opacity: 0.35;
   cursor: not-allowed;
 }
 
@@ -411,6 +576,44 @@ body:has(.admin-shell) {
   object-fit: cover;
   border-radius: 10px;
 }
+audio {
+  width: 100%;
+  filter: invert(0.92) hue-rotate(180deg);
+}
+
+/* Small icon-only report button, anchored bottom-right of the pin sheet */
+.pin-detail-report {
+  position: absolute;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--festival-cyan-2);
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 120ms ease-out, color 120ms ease-out, border-color 120ms ease-out;
+  font-family: inherit;
+}
+.pin-detail-report:hover {
+  opacity: 1;
+  color: var(--festival-magenta);
+  border-color: var(--festival-magenta);
+}
+.pin-detail-report:disabled {
+  cursor: default;
+  opacity: 0.3;
+}
+.pin-detail-report.reported {
+  color: var(--festival-magenta);
+  border-color: var(--festival-magenta);
+  opacity: 1;
+}
 
 /* Picker shared */
 .picker-empty {
@@ -426,8 +629,8 @@ body:has(.admin-shell) {
   border-radius: 8px;
   cursor: pointer;
   border: 1px dashed var(--border);
-  background: var(--bg);
-  color: var(--text);
+  background: rgba(19, 0, 105, 0.4);
+  color: var(--festival-cyan);
 }
 .picker-add:disabled {
   opacity: 0.5;
@@ -436,9 +639,11 @@ body:has(.admin-shell) {
 .picker-remove {
   border-style: solid;
   margin-top: 6px;
+  color: var(--festival-magenta);
+  border-color: var(--festival-magenta);
 }
 .picker-error {
-  color: #8a2828;
+  color: var(--festival-magenta);
   font-size: 13px;
   margin: 0;
 }
@@ -466,12 +671,13 @@ body:has(.admin-shell) {
   gap: 8px;
   font-size: 14px;
   font-variant-numeric: tabular-nums;
+  color: var(--festival-cyan);
 }
 .recorder-dot {
   width: 10px;
   height: 10px;
   border-radius: 999px;
-  background: #c84030;
+  background: var(--festival-magenta);
   animation: pulse 1s infinite;
 }
 @keyframes pulse {
@@ -481,7 +687,7 @@ body:has(.admin-shell) {
 .recorder-remaining {
   margin: 0;
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--festival-cyan-2);
 }
 .recorder-preview {
   display: flex;
@@ -493,6 +699,6 @@ body:has(.admin-shell) {
 }
 .recorder-meta {
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--festival-cyan-2);
   font-variant-numeric: tabular-nums;
 }

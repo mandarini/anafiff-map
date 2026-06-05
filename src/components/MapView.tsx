@@ -1,7 +1,9 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
 import { loadMaps, loadMarker } from '../lib/google/loader'
-import { ANAFI_CENTER, ANAFI_BOUNDS } from '../lib/google/anafi'
+import { ANAFI_CENTER } from '../lib/google/anafi'
 import { GOOGLE_MAPS_MAP_ID } from '../config'
+import { TextIcon, ImageIcon, AudioIcon, LocateIcon } from '../lib/icons'
 import type { Pin } from '../lib/types'
 
 type Props = {
@@ -14,8 +16,11 @@ export function MapView({ pins, onMapClick, onPinClick }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const mapRef = useRef<google.maps.Map | null>(null)
   const markersRef = useRef<Map<string, google.maps.marker.AdvancedMarkerElement>>(new Map())
+  const locateMarkerRef = useRef<google.maps.marker.AdvancedMarkerElement | null>(null)
   const onMapClickRef = useRef(onMapClick)
   const onPinClickRef = useRef(onPinClick)
+  const [locating, setLocating] = useState(false)
+  const [locateError, setLocateError] = useState<string | null>(null)
 
   useEffect(() => {
     onMapClickRef.current = onMapClick
@@ -36,12 +41,6 @@ export function MapView({ pins, onMapClick, onPinClick }: Props) {
         zoom: 13,
         mapId: GOOGLE_MAPS_MAP_ID,
         colorScheme: google.maps.ColorScheme.DARK,
-        restriction: {
-          latLngBounds: ANAFI_BOUNDS,
-          strictBounds: false,
-        },
-        minZoom: 12,
-        maxZoom: 18,
         disableDefaultUI: true,
         zoomControl: true,
         gestureHandling: 'greedy',
@@ -65,7 +64,69 @@ export function MapView({ pins, onMapClick, onPinClick }: Props) {
     void syncMarkers(map, pins, markersRef.current, (pin) => onPinClickRef.current(pin))
   }, [pins])
 
-  return <div ref={containerRef} className="map-canvas" />
+  async function handleLocate() {
+    if (locating) return
+    if (!('geolocation' in navigator)) {
+      setLocateError("This device doesn't support location.")
+      return
+    }
+    setLocating(true)
+    setLocateError(null)
+
+    try {
+      const pos = await new Promise<GeolocationPosition>((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 30000,
+        })
+      })
+
+      const map = mapRef.current
+      if (!map) return
+      const here = { lat: pos.coords.latitude, lng: pos.coords.longitude }
+      map.panTo(here)
+      if ((map.getZoom() ?? 0) < 15) map.setZoom(16)
+
+      const { AdvancedMarkerElement } = await loadMarker()
+      if (locateMarkerRef.current) {
+        locateMarkerRef.current.position = here
+      } else {
+        const dot = document.createElement('div')
+        dot.className = 'locate-dot'
+        locateMarkerRef.current = new AdvancedMarkerElement({
+          map,
+          position: here,
+          content: dot,
+        })
+      }
+    } catch (err) {
+      const msg =
+        err instanceof GeolocationPositionError && err.code === err.PERMISSION_DENIED
+          ? 'Location permission denied.'
+          : "Couldn't get your location."
+      setLocateError(msg)
+      window.setTimeout(() => setLocateError(null), 3000)
+    } finally {
+      setLocating(false)
+    }
+  }
+
+  return (
+    <>
+      <div ref={containerRef} className="map-canvas" />
+      <button
+        type="button"
+        className="locate-btn"
+        aria-label="Use my location"
+        disabled={locating}
+        onClick={() => void handleLocate()}
+      >
+        <LocateIcon size={22} />
+      </button>
+      {locateError && <div className="map-toast">{locateError}</div>}
+    </>
+  )
 }
 
 async function syncMarkers(
@@ -93,7 +154,7 @@ async function syncMarkers(
 
     const dot = document.createElement('div')
     dot.className = 'pin-dot'
-    dot.innerHTML = pinIconHtml(pin)
+    dot.innerHTML = pinContentHtml(pin)
 
     const marker = new AdvancedMarkerElement({
       map,
@@ -107,10 +168,20 @@ async function syncMarkers(
   }
 }
 
-function pinIconHtml(pin: Pin): string {
-  const icons: string[] = []
-  if (pin.text) icons.push('T')
-  if (pin.image_path) icons.push('◯')
-  if (pin.audio_path) icons.push('~')
-  return `<span class="pin-icons">${icons.join('')}</span>`
+function pinContentHtml(pin: Pin): string {
+  const parts: string[] = []
+  if (pin.text) {
+    parts.push(wrapIcon('icon-text', renderToStaticMarkup(<TextIcon size={16} />)))
+  }
+  if (pin.image_path) {
+    parts.push(wrapIcon('icon-image', renderToStaticMarkup(<ImageIcon size={16} />)))
+  }
+  if (pin.audio_path) {
+    parts.push(wrapIcon('icon-audio', renderToStaticMarkup(<AudioIcon size={16} />)))
+  }
+  return parts.join('')
+}
+
+function wrapIcon(className: string, svg: string): string {
+  return `<span class="${className}">${svg}</span>`
 }

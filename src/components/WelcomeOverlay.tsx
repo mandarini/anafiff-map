@@ -15,7 +15,7 @@ export function WelcomeOverlay() {
       <button
         type="button"
         className="welcome-reopen"
-        aria-label="Open workshop introduction"
+        aria-label="Open introduction"
         onClick={() => setOpen(true)}
       >
         ?
@@ -32,7 +32,7 @@ export function WelcomeOverlay() {
     <div className="welcome-backdrop" role="dialog" aria-modal="true">
       <div className="welcome-card">
         <h1>Mapping the Present</h1>
-        <p className="welcome-subtitle">ANAFIFF psychogeography workshop</p>
+        <p className="welcome-subtitle">ANAFIFF psychogeographical collective journal</p>
         <p>
           Walk Anafi. Drop a pin where you feel something. Leave a note, a photo,
           or a voice — anonymously — for the rest of the festival to find.
@@ -44,6 +44,11 @@ export function WelcomeOverlay() {
           <li>Track a single recurring colour along your route.</li>
         </ul>
         <p className="welcome-hint">Tap anywhere on the map to drop a pin.</p>
+        <small className="welcome-disclaimer">
+          <strong>Ongoing project by Evangelos Pournaras &amp; Katerina Skroumpelou.</strong>
+          {' '}By participating, anything you submit may be used in future publications,
+          exhibitions, or screenings.
+        </small>
         <button type="button" className="welcome-go" onClick={dismiss}>
           Begin
         </button>

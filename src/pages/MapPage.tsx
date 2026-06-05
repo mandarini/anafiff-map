@@ -54,6 +54,9 @@ export function MapPage() {
   return (
     <div className="map-page">
       <MapView pins={pins} onMapClick={handleMapClick} onPinClick={setSelectedPin} />
+      <div className="brand-mark" aria-hidden>
+        <img src="/anafiff_logo_dark.png" alt="" />
+      </div>
       <WelcomeOverlay />
       {loadError && <div className="load-error">{loadError}</div>}
       {selectedPin && (
