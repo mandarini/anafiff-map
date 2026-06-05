@@ -1,0 +1,265 @@
+{
+  "variant": "dark",
+  "styles": [
+    {
+      "id": "natural.water",
+      "geometry": {
+        "fillOpacity": 1,
+        "fillColor": "#130069"
+      },
+      "label": {
+        "textFillColor": "#45E7FB",
+        "textStrokeOpacity": 0.9,
+        "textStrokeColor": "#130069"
+      }
+    },
+    {
+      "id": "natural.land",
+      "geometry": {
+        "fillOpacity": 1,
+        "fillColor": "#095A90"
+      }
+    },
+    {
+      "id": "natural.land.landCover.forest",
+      "geometry": {
+        "fillOpacity": 0.35,
+        "fillColor": "#9CFA09"
+      }
+    },
+    {
+      "id": "natural.land.landCover.ice",
+      "geometry": {
+        "fillOpacity": 1,
+        "fillColor": "#45E7FB"
+      }
+    },
+    {
+      "id": "infrastructure.urbanArea",
+      "geometry": {
+        "fillOpacity": 0.35,
+        "fillColor": "#259FCA"
+      }
+    },
+    {
+      "id": "infrastructure.building",
+      "geometry": {
+        "fillOpacity": 0.15,
+        "fillColor": "#021261",
+        "strokeOpacity": 0.6,
+        "strokeColor": "#45E7FB"
+      }
+    },
+    {
+      "id": "infrastructure.building.commercial",
+      "geometry": {
+        "visible": false
+      }
+    },
+    {
+      "id": "infrastructure.roadNetwork.road.highway",
+      "geometry": {
+        "fillOpacity": 1,
+        "fillColor": "#0DFAF6",
+        "strokeOpacity": 1,
+        "strokeColor": "#45E7FB"
+      },
+      "label": {
+        "textFillColor": "#FFFFFF",
+        "textStrokeOpacity": 0.9,
+        "textStrokeColor": "#130069"
+      }
+    },
+    {
+      "id": "infrastructure.roadNetwork.road.arterial",
+      "geometry": {
+        "fillOpacity": 1,
+        "fillColor": "#45E7FB",
+        "strokeOpacity": 0.8,
+        "strokeColor": "#0DFAF6"
+      },
+      "label": {
+        "visible": false
+      }
+    },
+    {
+      "id": "infrastructure.roadNetwork.road.local",
+      "geometry": {
+        "fillOpacity": 0.8,
+        "fillColor": "#45E7FB",
+        "strokeOpacity": 0.6,
+        "strokeColor": "#0DFAF6"
+      },
+      "label": {
+        "visible": false
+      }
+    },
+    {
+      "id": "infrastructure.roadNetwork.road.noOutlet",
+      "geometry": {
+        "fillOpacity": 0.5,
+        "fillColor": "#45E7FB"
+      }
+    },
+    {
+      "id": "infrastructure.railwayTrack",
+      "geometry": {
+        "visible": false
+      }
+    },
+    {
+      "id": "infrastructure.railwayTrack.commercial",
+      "geometry": {
+        "visible": false
+      }
+    },
+    {
+      "id": "infrastructure.railwayTrack.commuter",
+      "geometry": {
+        "visible": false
+      }
+    },
+    {
+      "id": "infrastructure.transitStation",
+      "label": {
+        "visible": false
+      }
+    },
+    {
+      "id": "infrastructure.airport",
+      "label": {
+        "visible": false
+      }
+    },
+    {
+      "id": "pointOfInterest",
+      "label": {
+        "visible": false
+      }
+    },
+    {
+      "id": "pointOfInterest.business",
+      "label": {
+        "visible": false
+      }
+    },
+    {
+      "id": "pointOfInterest.business.foodAndDrink",
+      "label": {
+        "visible": false
+      }
+    },
+    {
+      "id": "pointOfInterest.business.lodging",
+      "label": {
+        "visible": false
+      }
+    },
+    {
+      "id": "pointOfInterest.business.shopping",
+      "label": {
+        "visible": false
+      }
+    },
+    {
+      "id": "pointOfInterest.medical",
+      "label": {
+        "visible": false
+      }
+    },
+    {
+      "id": "pointOfInterest.school",
+      "label": {
+        "visible": false
+      }
+    },
+    {
+      "id": "pointOfInterest.sportsComplex",
+      "label": {
+        "visible": false
+      }
+    },
+    {
+      "id": "pointOfInterest.government",
+      "label": {
+        "visible": false
+      }
+    },
+    {
+      "id": "pointOfInterest.attraction",
+      "label": {
+        "visible": true,
+        "textFillColor": "#D216E6",
+        "textStrokeOpacity": 0.9,
+        "textStrokeColor": "#130069"
+      }
+    },
+    {
+      "id": "pointOfInterest.landmark",
+      "label": {
+        "visible": true,
+        "textFillColor": "#D216E6",
+        "textStrokeOpacity": 0.9,
+        "textStrokeColor": "#130069"
+      }
+    },
+    {
+      "id": "pointOfInterest.placeOfWorship",
+      "label": {
+        "visible": true,
+        "textFillColor": "#D216E6",
+        "textStrokeOpacity": 0.9,
+        "textStrokeColor": "#130069"
+      }
+    },
+    {
+      "id": "pointOfInterest.recreation",
+      "geometry": {
+        "fillOpacity": 0.3,
+        "fillColor": "#9CFA09"
+      },
+      "label": {
+        "visible": true,
+        "textFillColor": "#9CFA09",
+        "textStrokeOpacity": 0.9,
+        "textStrokeColor": "#130069"
+      }
+    },
+    {
+      "id": "pointOfInterest.recreation.park",
+      "geometry": {
+        "fillOpacity": 0.3,
+        "fillColor": "#9CFA09"
+      },
+      "label": {
+        "visible": true,
+        "textFillColor": "#9CFA09",
+        "textStrokeOpacity": 0.9,
+        "textStrokeColor": "#130069"
+      }
+    },
+    {
+      "id": "political",
+      "label": {
+        "textFillColor": "#9CFA09",
+        "textStrokeOpacity": 0.9,
+        "textStrokeColor": "#130069"
+      }
+    },
+    {
+      "id": "political.border",
+      "geometry": {
+        "color": "#0DFAF6"
+      }
+    },
+    {
+      "id": "political.city",
+      "label": {
+        "visible": true,
+        "textFillColor": "#9CFA09",
+        "textStrokeOpacity": 0.9,
+        "textStrokeColor": "#130069"
+      }
+    }
+  ]
+}
