@@ -322,13 +322,20 @@ body:has(.admin-shell) {
   overflow-y: auto;
   height: auto;
   color: var(--text);
+  max-width: 1280px;
+  margin: 0 auto;
 }
 .admin-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+}
+.admin-header .sheet-cancel {
+  flex: 0 0 auto;
+  padding: 8px 16px;
+  font-size: 13px;
 }
 .admin-header h1 {
   margin: 0;
@@ -378,7 +385,8 @@ body:has(.admin-shell) {
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 12px;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
 }
 .admin-pin {
   background: var(--card);
@@ -388,7 +396,11 @@ body:has(.admin-shell) {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+}
+.admin-pin .sheet-cancel {
+  padding: 10px 14px;
+  font-size: 14px;
 }
 .admin-pin.hidden {
   opacity: 0.55;
@@ -534,6 +546,9 @@ body:has(.admin-shell) {
   display: flex;
   gap: 10px;
   margin-top: 16px;
+}
+.sheet:has(.pin-detail-report) .sheet-actions {
+  padding-right: 56px;
 }
 .sheet-cancel,
 .sheet-submit {
