@@ -32,9 +32,9 @@ export function WelcomeOverlay() {
     <div className="welcome-backdrop" role="dialog" aria-modal="true">
       <div className="welcome-card">
         <h1>Mapping the Present</h1>
-        <p className="welcome-subtitle">ANAFIFF psychogeographical collective journal</p>
+        <p className="welcome-subtitle">psychogeographical collective journal</p>
         <p>
-          Walk Anafi. Drop a pin where you feel something. Leave a note, a photo,
+          Drop a pin where you feel something. Leave a note, a photo,
           or a voice — anonymously — for the rest of the festival to find.
         </p>
         <h2>Three prompts to carry with you</h2>
