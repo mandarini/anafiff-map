@@ -4,6 +4,11 @@
 
 export const MAX_AUDIO_DURATION_MS = 60_000
 
+// Cap the encoder bitrate so a full-length clip stays small regardless of
+// device defaults (iOS records at an uncapped, much higher rate otherwise).
+// 96 kbps is transparent for voice and keeps a 60s clip well under ~1 MB.
+const AUDIO_BITS_PER_SECOND = 96_000
+
 export function pickAudioMimeType(): string | null {
   if (typeof MediaRecorder === 'undefined') return null
   const candidates = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4']
@@ -46,7 +51,10 @@ export class AudioRecording {
     const mimeType = pickAudioMimeType()
     if (!mimeType) throw new Error('Audio recording is not supported in this browser')
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-    const recorder = new MediaRecorder(stream, { mimeType })
+    const recorder = new MediaRecorder(stream, {
+      mimeType,
+      audioBitsPerSecond: AUDIO_BITS_PER_SECOND,
+    })
     const recording = new AudioRecording(stream, recorder)
     recording.startedAt = performance.now()
     recorder.start()

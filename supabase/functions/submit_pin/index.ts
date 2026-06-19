@@ -16,8 +16,8 @@ import { createClient } from 'jsr:@supabase/supabase-js@2'
 
 const ANAFI_BOUNDS = { north: 36.39, south: 36.33, west: 25.71, east: 25.84 } as const
 const TEXT_MAX = 500
-const IMAGE_MAX_BYTES = 1_500_000
-const AUDIO_MAX_BYTES = 2_000_000
+const IMAGE_MAX_BYTES = 8_000_000
+const AUDIO_MAX_BYTES = 8_000_000
 const RATE_LIMIT_PER_HOUR = 8
 
 type Payload = {
